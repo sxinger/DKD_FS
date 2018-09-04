@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1536097208454.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "12B5023A",
+    "lastKnownWriteTime" : 1524454949,
+    "last_content_update" : 1524454949,
+    "path" : "E:/Knowledge Discovery/DKD/JAMIA/scr/DKD_Preprocess.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "19,33",
+        "scrollLine" : "38"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
