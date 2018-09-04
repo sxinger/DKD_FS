@@ -327,54 +327,22 @@ for(i in seq_len(resamples)){
       aucp_c_opt<-pROC::roc.test(feat_num[[paste0("size_",bounds[3])]]$roc_obj,ROC_obj_opt,method='delong')$p.value
       
       #update a,b,c,d
-      if(aucp_b_c > inc_tol_p && 
-         (max(aucp_b_opt,aucp_c_opt) > inc_tol_p || max(auc_b_opt,auc_c_opt) >= 0)){
-        d<-c
-        local_min<<-b
-      }else if(aucp_b_c > inc_tol_p && 
-               (max(aucp_b_opt,aucp_c_opt) <= inc_tol_p && max(auc_b_opt,auc_c_opt) < 0)){
+      if((max(aucp_b_opt,aucp_c_opt) <= inc_tol_p &&
+          max(auc_b_opt,auc_c_opt) < 0)){
         a<-b
         d<-opt_size
         local_min<<-opt_size
-      }else if((aucp_b_c <= inc_tol_p && auc_b_c > 0) &&
-               (aucp_b_opt > inc_tol_p || auc_b_opt >= 0)){
+      }else if(aucp_b_c > inc_tol_p ||
+               auc_b_c > 0){
         d<-c
         local_min<<-b
-      }else if((aucp_b_c <= inc_tol_p && auc_b_c > 0) &&
-               (aucp_b_opt <= inc_tol_p && auc_b_opt < 0)){
-        a<-b
-        d<-opt_size
-        local_min<<-opt_size
-      }else if((aucp_b_c <= inc_tol_p && auc_b_c < 0) &&
-               (aucp_c_opt > inc_tol_p || auc_c_opt >= 0)){
+      }else if(aucp_c_opt > inc_tol_p ||
+               auc_c_opt >= 0){
         a<-b
         local_min<<-c
-      }else if((aucp_b_c <= inc_tol_p && auc_b_c < 0) &&
-               (aucp_c_opt <= inc_tol_p && auc_c_opt < 0)){
-        a<-b
-        d<-opt_size
-        local_min<<-opt_size
       }else{
         stop("conditions are not exhaustive!")
       }
-      
-      # #update a,b,c,d
-      # if((max(aucp_b_opt,aucp_c_opt) <= inc_tol_p &&
-      #     max(auc_b_opt,auc_c_opt) < 0)){
-      #   a<-b
-      #   d<-opt_size
-      #   local_min<<-opt_size
-      # }else if(aucp_b_c > inc_tol_p ||
-      #          auc_b_c > 0){
-      #   d<-c
-      #   local_min<<-b
-      # }else if(aucp_c_opt > inc_tol_p || 
-      #          auc_c_opt >= 0){
-      #   a<-b
-      #   local_min<<-c
-      # }else{
-      #   stop("conditions are not exhaustive!")
-      # }
       
       #update global_min?
       if(local_min < global_min){

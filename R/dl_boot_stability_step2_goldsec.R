@@ -36,9 +36,11 @@ load("feature_dict.Rdata")
 #can be set to range of values
 hyper_params<-list(
   activation=c("Rectifier"), #default
-  hidden=list(c(100,100),c(200,200)),
+  hidden=list(c(100,100),c(200,200),
+              c(100,100,100),c(200,200,200),
+              c(100,100,100,100),c(200,200,200,200)),
   # hidden=list(c(64,64),c(128,128),c(256,256)),
-  input_dropout_ratio=0.1,   #common choice: 0.1,0.2
+  input_dropout_ratio=c(0.1,0.2),   #common choice: 0.1,0.2
   l1=1e-5,  #default
   l2=1e-5   #default
 )
@@ -268,7 +270,7 @@ for(i in 1:resamples){
             y=target_idx,
             distribution="bernoulli",
             standardize=T,
-            epochs=1,                       ## make it fast
+            epochs=1000,                    ## make it fast
             stopping_metric="logloss",
             stopping_tolerance=1e-2,        ## stop when logloss does not improve by >=1% for 2 scoring events
             stopping_rounds=2,
@@ -335,54 +337,22 @@ for(i in 1:resamples){
       aucp_c_opt<-pROC::roc.test(feat_num[[paste0("size_",bounds[3])]]$roc_obj,ROC_obj_opt,method='delong')$p.value
       
       #update a,b,c,d
-      if(aucp_b_c > inc_tol_p && 
-         (max(aucp_b_opt,aucp_c_opt) > inc_tol_p || max(auc_b_opt,auc_c_opt) >= 0)){
-        d<-c
-        local_min<<-b
-      }else if(aucp_b_c > inc_tol_p && 
-               (max(aucp_b_opt,aucp_c_opt) <= inc_tol_p && max(auc_b_opt,auc_c_opt) < 0)){
+      if((max(aucp_b_opt,aucp_c_opt) <= inc_tol_p &&
+          max(auc_b_opt,auc_c_opt) < 0)){
         a<-b
         d<-opt_size
         local_min<<-opt_size
-      }else if((aucp_b_c <= inc_tol_p && auc_b_c > 0) &&
-               (aucp_b_opt > inc_tol_p || auc_b_opt >= 0)){
+      }else if(aucp_b_c > inc_tol_p ||
+               auc_b_c > 0){
         d<-c
         local_min<<-b
-      }else if((aucp_b_c <= inc_tol_p && auc_b_c > 0) &&
-               (aucp_b_opt <= inc_tol_p && auc_b_opt < 0)){
-        a<-b
-        d<-opt_size
-        local_min<<-opt_size
-      }else if((aucp_b_c <= inc_tol_p && auc_b_c < 0) &&
-               (aucp_c_opt > inc_tol_p || auc_c_opt >= 0)){
+      }else if(aucp_c_opt > inc_tol_p ||
+               auc_c_opt >= 0){
         a<-b
         local_min<<-c
-      }else if((aucp_b_c <= inc_tol_p && auc_b_c < 0) &&
-               (aucp_c_opt <= inc_tol_p && auc_c_opt < 0)){
-        a<-b
-        d<-opt_size
-        local_min<<-opt_size
       }else{
         stop("conditions are not exhaustive!")
       }
-      
-      # #update a,b,c,d
-      # if((max(aucp_b_opt,aucp_c_opt) <= inc_tol_p &&
-      #     max(auc_b_opt,auc_c_opt) < 0)){
-      #   a<-b
-      #   d<-opt_size
-      #   local_min<<-opt_size
-      # }else if(aucp_b_c > inc_tol_p ||
-      #          auc_b_c > 0){
-      #   d<-c
-      #   local_min<<-b
-      # }else if(aucp_c_opt > inc_tol_p || 
-      #          auc_c_opt >= 0){
-      #   a<-b
-      #   local_min<<-c
-      # }else{
-      #   stop("conditions are not exhaustive!")
-      # }
       
       #update global_min?
       if(local_min < global_min){
