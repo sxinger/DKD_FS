@@ -29,8 +29,8 @@ load(paste0("random_sample",resamples,"_boots",boots,".Rdata"))
 #hyper-parameter grid for xgboost
 eval_metric<-"auc"
 objective<-"binary:logistic"
-grid_params<-expand.grid(max.depth=10,
-                         eta=0.02,
+grid_params<-expand.grid(max.depth=c(2,4,6,8,10,12,14,16,18,20),
+                         eta=c(0.5,0.3,0.1,0.05,0.02,0.01,0.005),
                          min_child_weight=1,
                          subsample=0.8,
                          colsample_bytree=0.8, 

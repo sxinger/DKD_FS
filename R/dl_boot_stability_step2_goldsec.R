@@ -37,8 +37,7 @@ load("feature_dict.Rdata")
 hyper_params<-list(
   activation=c("Rectifier"), #default
   hidden=list(c(100,100),c(200,200),
-              c(100,100,100),c(200,200,200),
-              c(100,100,100,100),c(200,200,200,200)),
+              c(100,100,100),c(200,200,200)),
   # hidden=list(c(64,64),c(128,128),c(256,256)),
   input_dropout_ratio=c(0.1,0.2),   #common choice: 0.1,0.2
   l1=1e-5,  #default

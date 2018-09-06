@@ -38,8 +38,8 @@ objective<-"binary:logistic"
 nrounds<-1000
 
 #can be set to range of values
-grid_params<-expand.grid(max.depth=10,    
-                         eta=0.01,
+grid_params<-expand.grid(max.depth=c(6,8,10),    
+                         eta=c(0.05,0.02,0.01),
                          min_child_weight=1,
                          subsample=0.8,
                          colsample_bytree=0.8, 
