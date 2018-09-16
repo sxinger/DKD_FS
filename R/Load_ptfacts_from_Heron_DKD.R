@@ -8,11 +8,8 @@ require_libraries(c( "DBI"
                     ,"tidyr"))
 
 #set up connection with Oracle db
-# heronb2_config<-read.csv('../heronb2_config.csv')
-# c_connect<-dbConnect(Oracle(),heronb2_config$username,heronb2_config$password,heronb2_config$access)
-
-herona1_config<-read.csv('../herona1_config.csv')
-c_connect<-dbConnect(Oracle(),herona1_config$username,herona1_config$password,herona1_config$access)
+config<-read.csv('./config.csv')
+c_connect<-dbConnect(Oracle(),config$username,config$password,config$access)
 
 pat_tbl_Oracle<-"PATIENTS_DKD"
 

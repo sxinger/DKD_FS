@@ -11,14 +11,9 @@ require_libraries(c( "DBI"
                     ,"magrittr"))
 
 #set up connection with Oracle db
-heronb2_config<-read.csv('../heronb2_config.csv')
-c_connect<-dbConnect(Oracle(),heronb2_config$username,heronb2_config$password,heronb2_config$access)
+config<-read.csv('./config.csv')
+c_connect<-dbConnect(Oracle(),config$username,config$password,config$access)
 
-
-dbGetQuery(c_connect,"select * from t")
-
-# herona1_config<-read.csv('../herona1_config.csv')
-# c_connect<-dbConnect(Oracle(),herona1_config$username,herona1_config$password,herona1_config$access)
 
 #heron facts are organized in the following root folders
 var_categ<-c(
