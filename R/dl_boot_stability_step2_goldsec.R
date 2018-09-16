@@ -36,14 +36,12 @@ load("feature_dict.Rdata")
 #can be set to range of values
 hyper_params<-list(
   activation=c("Rectifier"), #default
-  hidden=list(c(100,100),c(200,200),
-              c(100,100,100),c(200,200,200)),
-  # hidden=list(c(64,64),c(128,128),c(256,256)),
-  input_dropout_ratio=c(0.1,0.2),   #common choice: 0.1,0.2
+  hidden=list(rep(100,2),rep(200,2),rep(300,2),rep(400,2),rep(500,2),
+              rep(100,3),rep(200,3),rep(300,3),rep(400,3),rep(500,3)),
+  input_dropout_ratio=0.1,   #common choice: 0.1,0.2
   l1=1e-5,  #default
   l2=1e-5   #default
 )
-
 search_criteria<-list(
   strategy = "RandomDiscrete",
   max_runtime_secs = 360,
@@ -269,7 +267,7 @@ for(i in 1:resamples){
             y=target_idx,
             distribution="bernoulli",
             standardize=T,
-            epochs=1000,                    ## make it fast
+            epochs=100,                     ## make it fast
             stopping_metric="logloss",
             stopping_tolerance=1e-2,        ## stop when logloss does not improve by >=1% for 2 scoring events
             stopping_rounds=2,

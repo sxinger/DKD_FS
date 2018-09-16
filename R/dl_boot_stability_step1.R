@@ -34,12 +34,13 @@ load("feature_dict.Rdata") #variable dictionary
 
 ##global values
 hyper_params<-list(
-                   activation=c("Rectifier"), #default
-                   hidden=list(c(64,64),c(128,128),c(256,256)),
-                   input_dropout_ratio=0.1,   #common choice: 0.1,0.2
-                   l1=1e-5,  #default
-                   l2=1e-5   #default
-                   )
+  activation=c("Rectifier"), #default
+  hidden=list(rep(100,2),rep(200,2),rep(300,2),rep(400,2),rep(500,2),
+              rep(100,3),rep(200,3),rep(300,3),rep(400,3),rep(500,3)),
+  input_dropout_ratio=0.1,   #common choice: 0.1,0.2
+  l1=1e-5,  #default
+  l2=1e-5   #default
+)
 
 search_criteria<-list(
                       strategy = "RandomDiscrete",
@@ -130,7 +131,7 @@ for(i in 1:10){
       y=target_idx,
       distribution="bernoulli",
       standardize=T,
-      epochs=10,                      ## make it fast
+      epochs=100,                     ## make it fast
       stopping_metric="logloss",
       stopping_tolerance=1e-2,        ## stop when logloss does not improve by >=1% for 2 scoring events
       stopping_rounds=2,
